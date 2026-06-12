@@ -434,47 +434,41 @@ pre {
 
 <!-- Script de autenticación -->
 <script>
-  // Verificar autenticación al cargar la página
-  function checkAuthentication() {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    
-    if (!token || !user) {
-      // Redirigir al login
-      window.location.href = './login.html';
-      return;
-    }
-
-    try {
-      const userData = JSON.parse(user);
-      document.getElementById('userDisplay').textContent = `👤 ${userData.email}`;
-    } catch (e) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = './login.html';
-    }
+// Auth check - must run before DOM renders to avoid flash of content
+(function() {
+  var token = localStorage.getItem('token');
+  var user = localStorage.getItem('user');
+  if (!token || !user) {
+    window.location.replace('./login.html');
   }
+})();
 
-  // Manejar cierre de sesión
-  function handleLogout() {
-    if (confirm('¿Deseas cerrar sesión?')) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = './login.html';
-    }
+// Set user display after DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  var user = localStorage.getItem('user');
+  if (!user) return;
+  try {
+    var userData = JSON.parse(user);
+    var el = document.getElementById('userDisplay');
+    if (el) el.textContent = userData.email || userData.name || '';
+  } catch(e) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.replace('./login.html');
   }
+});
 
-  // Obtener token para peticiones
-  function getAuthHeaders() {
-    const token = localStorage.getItem('token');
-    return {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    };
+function handleLogout() {
+  if (confirm('Deseas cerrar sesion?')) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = './login.html';
   }
+}
 
-  // Verificar autenticación al cargar
-  checkAuthentication();
+function getAuthHeaders() {
+  return { 'Content-Type': 'application/json' };
+}
 </script>
 
 <header>
