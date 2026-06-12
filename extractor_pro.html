@@ -428,6 +428,18 @@ pre {
   .panel-left { border-right:none; border-bottom:1.5px solid var(--ink); }
   h1 { font-size:2rem; }
 }
+
+/* ── API KEY MODAL ── */
+.apikey-overlay{position:fixed;inset:0;background:rgba(13,13,13,0.6);z-index:100;display:flex;align-items:center;justify-content:center;}
+.apikey-box{background:var(--white);border:1.5px solid var(--ink);border-radius:6px;padding:2rem 2.5rem;max-width:440px;width:90%;}
+.apikey-box h2{font-family:var(--display);font-size:1.2rem;font-weight:800;margin-bottom:0.5rem;}
+.apikey-box p{font-size:0.85rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;}
+.apikey-box input{width:100%;padding:0.85rem 1rem;border:1.5px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:0.85rem;margin-bottom:0.4rem;}
+.apikey-box input:focus{outline:none;border-color:var(--accent);}
+.apikey-box .api-note{font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.5;}
+.apikey-box .api-note a{color:var(--accent);}
+.apikey-btn{width:100%;padding:0.85rem;background:var(--accent);color:var(--white);border:none;border-radius:4px;font-family:var(--sans);font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.2s;}
+.apikey-btn:hover{background:#A8371F;}
 </style>
 </head>
 <body>
@@ -685,6 +697,16 @@ let loadingInterval;
 
 async function extractData(){
 if(!b64)return;
+
+// Check for API key - show modal if missing
+const GEMINI_KEY = localStorage.getItem('gemini_key');
+if(!GEMINI_KEY){
+  window._pendingExtract = true;
+  document.getElementById('apikey-overlay').style.display='flex';
+  document.getElementById('apikey-input').focus();
+  return;
+}
+
 document.getElementById('loading-wrap').style.display='flex';
 document.getElementById('error-wrap').style.display='none';
 document.getElementById('extract-btn').disabled=true;
@@ -694,17 +716,6 @@ loadingInterval=setInterval(()=>{
 document.getElementById('loading-text').textContent=loadingMsgs[li%loadingMsgs.length];
 li++;
 },900);
-
-const GEMINI_KEY = localStorage.getItem('gemini_key');
-if(!GEMINI_KEY){
-  clearInterval(loadingInterval);
-  document.getElementById('loading-wrap').style.display='none';
-  document.getElementById('extract-btn').disabled=false;
-  document.getElementById('error-wrap').style.display='block';
-  document.getElementById('error-wrap').textContent='Error: No se encontro la API key de Gemini. Por favor inicia sesion de nuevo.';
-  setTimeout(()=>window.location.href='./login.html',2000);
-  return;
-}
 
 const prompt=`Eres un asistente experto en contabilidad mexicana. Analiza la imagen de la factura/ticket y devuelve UNICAMENTE un JSON valido con estos campos:
 {
@@ -735,7 +746,8 @@ generationConfig:{temperature:0.1,maxOutputTokens:1024}
 });
 
 if(response.status===400||response.status===403){
-throw new Error('API key invalida o sin permisos. Verifica tu clave de Gemini.');
+  localStorage.removeItem('gemini_key');
+  throw new Error('API key invalida. Por favor ingresa una clave valida.');
 }
 if(!response.ok){
 const errData=await response.json();
@@ -744,8 +756,6 @@ throw new Error(errData.error?.message||'Error en la API de Gemini');
 
 const data=await response.json();
 const rawText=data.candidates?.[0]?.content?.parts?.[0]?.text||'{}';
-
-// Clean JSON from markdown if present
 const jsonText=rawText.replace(/```json/g,'').replace(/```/g,'').trim();
 const parsed=JSON.parse(jsonText);
 
@@ -764,6 +774,21 @@ document.getElementById('loading-wrap').style.display='none';
 document.getElementById('extract-btn').disabled=false;
 }
 }
+
+function saveApiKey(){
+const key = document.getElementById('apikey-input').value.trim();
+if(!key){ document.getElementById('apikey-input').style.border='1.5px solid var(--accent)'; return; }
+localStorage.setItem('gemini_key', key);
+document.getElementById('apikey-overlay').style.display='none';
+document.getElementById('apikey-input').value='';
+if(window._pendingExtract){ window._pendingExtract=false; extractData(); }
+}
+
+// Allow Enter key in API key input
+document.addEventListener('DOMContentLoaded', function(){
+  const inp = document.getElementById('apikey-input');
+  if(inp) inp.addEventListener('keydown', function(e){ if(e.key==='Enter') saveApiKey(); });
+});
 
 
 function renderResult(p){
@@ -915,5 +940,16 @@ function copyJSON(){
   });
 }
 </script>
+
+<!-- API Key Modal -->
+<div class="apikey-overlay" id="apikey-overlay" style="display:none;">
+  <div class="apikey-box">
+    <h2>Configura tu API Key</h2>
+    <p>Para analizar facturas con Gemini AI necesitas una clave de API gratuita de Google.</p>
+    <input type="password" id="apikey-input" placeholder="AIza..." autocomplete="off"/>
+    <p class="api-note">Obtén tu clave gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a>. Se guardará solo en tu navegador.</p>
+    <button class="apikey-btn" onclick="saveApiKey()">Guardar y continuar</button>
+  </div>
+</div>
 </body>
 </html>
