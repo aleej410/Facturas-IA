@@ -1,517 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FacturaAI — Acceso</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --ink: #0D0D0D;
-      --paper: #F4F1E8;
-      --cream: #EDE9DC;
-      --accent: #C84B31;
-      --gold: #D4A843;
-      --sage: #4A7C59;
-      --muted: #8C8578;
-      --border: #D5D0C4;
-      --white: #FEFDFB;
-      --mono: 'DM Mono', monospace;
-      --sans: 'DM Sans', sans-serif;
-      --display: 'Syne', sans-serif;
-      --error: #D74242;
-      --success: #2A7B2A;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body { height: 100%; }
-
-    body {
-      font-family: var(--sans);
-      background: var(--paper);
-      color: var(--ink);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
-    /* Grain overlay */
-    body::before {
-      content:'';
-      position:fixed;
-      inset:0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events:none;
-      z-index:0;
-      opacity:.6;
-    }
-
-    /* Container principal */
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 480px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 6px;
-      padding: 3rem 2.5rem;
-      box-shadow: 0 8px 32px rgba(13, 13, 13, 0.08);
-    }
-
-    /* Header */
-    .logo-container {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .logo {
-      font-family: var(--display);
-      font-weight: 800;
-      font-size: 1.8rem;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.5rem;
-    }
-
-    .logo span { color: var(--accent); }
-
-    .logo-subtitle {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 0;
-      margin-bottom: 2rem;
-      border-bottom: 1.5px solid var(--border);
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 1rem;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      color: var(--muted);
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-
-    .tab-btn:hover { color: var(--ink); }
-    .tab-btn.active { 
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-
-    /* Forms */
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    label {
-      display: block;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.95rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 4px;
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      background: var(--white);
-      color: var(--ink);
-      transition: all 0.2s;
-    }
-
-    input:hover { border-color: var(--ink); }
-    input:focus { 
-      outline: none;
-      border-color: var(--accent);
-      background: var(--cream);
-    }
-
-    /* Validación */
-    input.error {
-      border-color: var(--error);
-      background: rgba(215, 66, 66, 0.05);
-    }
-
-    .error-message {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--error);
-      margin-top: 0.4rem;
-      display: none;
-    }
-
-    .error-message.show { display: block; }
-
-    /* Botones */
-    .button {
-      width: 100%;
-      padding: 1rem;
-      border: none;
-      border-radius: 4px;
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.02em;
-    }
-
-    .button-primary {
-      background: var(--accent);
-      color: var(--white);
-      margin-bottom: 1rem;
-    }
-
-    .button-primary:hover {
-      background: #A8371F;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(200, 75, 49, 0.25);
-    }
-
-    .button-primary:active { transform: translateY(0); }
-
-    .button-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    /* Mensajes de estado */
-    .alert {
-      padding: 1rem;
-      border-radius: 4px;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-      display: none;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-    }
-
-    .alert.show { display: block; }
-    .alert.success { background: rgba(42, 123, 42, 0.1); color: var(--success); border: 1px solid var(--success); }
-    .alert.error { background: rgba(215, 66, 66, 0.1); color: var(--error); border: 1px solid var(--error); }
-
-    /* Link adicional */
-    .form-footer {
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .form-footer a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-      cursor: pointer;
-      border-bottom: 1px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .form-footer a:hover { border-bottom-color: var(--accent); }
-
-    /* Loading */
-    .spinner {
-      display: inline-block;
-      width: 1rem;
-      height: 1rem;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-right: 0.5rem;
-      vertical-align: middle;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Responsive */
-    @media (max-width: 520px) {
-      .container { padding: 2rem 1.5rem; }
-      h1 { font-size: 2rem; }
-      .tab-btn { font-size: 0.85rem; padding: 0.75rem; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FacturaAI - Acceso</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--ink:#0D0D0D;--paper:#F4F1E8;--cream:#EDE9DC;--accent:#C84B31;--muted:#8C8578;--border:#D5D0C4;--white:#FEFDFB;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--display:'Syne',sans-serif;--error:#D74242;--success:#2A7B2A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.container{position:relative;z-index:1;width:100%;max-width:480px;background:var(--white);border:1.5px solid var(--border);border-radius:6px;padding:3rem 2.5rem;box-shadow:0 8px 32px rgba(13,13,13,0.08);}
+.logo-container{text-align:center;margin-bottom:2.5rem;}
+.logo{font-family:var(--display);font-weight:800;font-size:1.8rem;letter-spacing:-0.03em;margin-bottom:0.5rem;}
+.logo span{color:var(--accent);}
+.logo-subtitle{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;}
+.tabs{display:flex;margin-bottom:2rem;border-bottom:1.5px solid var(--border);}
+.tab-btn{flex:1;padding:1rem;border:none;background:transparent;cursor:pointer;font-family:var(--sans);font-size:0.95rem;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;font-weight:500;}
+.tab-btn:hover{color:var(--ink);}.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.form-group{margin-bottom:1.5rem;}
+label{display:block;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;margin-bottom:0.6rem;}
+input{width:100%;padding:0.95rem 1rem;border:1.5px solid var(--border);border-radius:4px;font-family:var(--sans);font-size:0.95rem;background:var(--white);color:var(--ink);transition:all 0.2s;}
+input:hover{border-color:var(--ink);}input:focus{outline:none;border-color:var(--accent);background:var(--cream);}
+.button{width:100%;padding:1rem;border:none;border-radius:4px;font-family:var(--sans);font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.button-primary{background:var(--accent);color:var(--white);margin-bottom:1rem;}
+.button-primary:hover{background:#A8371F;transform:translateY(-2px);}
+.button-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+.alert{padding:1rem;border-radius:4px;margin-bottom:1.5rem;display:none;font-family:var(--mono);font-size:0.8rem;}
+.alert.show{display:block;}.alert.success{background:rgba(42,123,42,0.1);color:var(--success);border:1px solid var(--success);}
+.alert.error{background:rgba(215,66,66,0.1);color:var(--error);border:1px solid var(--error);}
+.form-footer{text-align:center;font-size:0.9rem;color:var(--muted);}
+.form-footer a{color:var(--accent);text-decoration:none;font-weight:600;cursor:pointer;}
+.spinner{display:inline-block;width:1rem;height:1rem;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin-right:0.5rem;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.api-note{font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-top:0.4rem;line-height:1.5;}
+.api-note a{color:var(--accent);}
+</style>
 </head>
 <body>
-  <div class="container">
-    <!-- Logo -->
-    <div class="logo-container">
-      <div class="logo">Factura<span>AI</span></div>
-      <div class="logo-subtitle">Gestión Inteligente de Facturas</div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="login">Acceso</button>
-      <button class="tab-btn" data-tab="register">Registro</button>
-    </div>
-
-    <!-- Alertas -->
-    <div class="alert" id="alert"></div>
-
-    <!-- Login Form -->
-    <form id="loginForm" class="form-container">
-      <div class="form-group">
-        <label for="loginEmail">Correo Electrónico</label>
-        <input type="email" id="loginEmail" name="email" placeholder="tu@email.com" required/>
-        <div class="error-message"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="loginPassword">Contraseña</label>
-        <input type="password" id="loginPassword" name="password" placeholder="••••••••" required/>
-        <div class="error-message"></div>
-      </div>
-
-      <button type="submit" class="button button-primary" id="loginBtn">
-        Acceder a mi cuenta
-      </button>
-
-      <div class="form-footer">
-        ¿No tienes cuenta? <a onclick="switchTab('register')">Regístrate aquí</a>
-      </div>
-    </form>
-
-    <!-- Register Form -->
-    <form id="registerForm" class="form-container" style="display: none;">
-      <div class="form-group">
-        <label for="registerName">Nombre Completo</label>
-        <input type="text" id="registerName" name="full_name" placeholder="Tu Nombre Completo" required/>
-        <div class="error-message"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="registerEmail">Correo Electrónico</label>
-        <input type="email" id="registerEmail" name="email" placeholder="tu@email.com" required/>
-        <div class="error-message"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="registerPassword">Contraseña</label>
-        <input type="password" id="registerPassword" name="password" placeholder="Mínimo 8 caracteres" required/>
-        <div class="error-message"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="registerConfirm">Confirmar Contraseña</label>
-        <input type="password" id="registerConfirm" name="confirm_password" placeholder="Repite tu contraseña" required/>
-        <div class="error-message"></div>
-      </div>
-
-      <button type="submit" class="button button-primary" id="registerBtn">
-        Crear mi cuenta
-      </button>
-
-      <div class="form-footer">
-        ¿Ya tienes cuenta? <a onclick="switchTab('login')">Accede aquí</a>
-      </div>
-    </form>
-  </div>
-
-  <script>
-    // Configuración
-    const API_URL = 'http://localhost:3000/api';
-
-    // Referencias del DOM
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const alertDiv = document.getElementById('alert');
-    const tabs = document.querySelectorAll('.tab-btn');
-
-    // Event Listeners
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
-    });
-
-    loginForm.addEventListener('submit', handleLogin);
-    registerForm.addEventListener('submit', handleRegister);
-
-    // Cambiar pestaña
-    function switchTab(tabName) {
-      const isLogin = tabName === 'login';
-      
-      document.querySelectorAll('.form-container').forEach(f => f.style.display = 'none');
-      (isLogin ? loginForm : registerForm).style.display = 'block';
-
-      tabs.forEach(tab => tab.classList.remove('active'));
-      document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-
-      clearAlert();
-      clearForm(isLogin ? loginForm : registerForm);
-    }
-
-    // Manejo de Login
-    async function handleLogin(e) {
-      e.preventDefault();
-      
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-
-      // Validaciones
-      if (!email || !password) {
-        showAlert('Por favor completa todos los campos', 'error');
-        return;
-      }
-
-      if (!isValidEmail(email)) {
-        showAlert('Correo electrónico inválido', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('loginBtn');
-      setButtonLoading(btn, true);
-
-      try {
-        const response = await fetch(`${API_URL}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-
-        const data = await response.json();
-
-        if (!data.success) {
-          showAlert(data.error || 'Error en el login', 'error');
-          return;
-        }
-
-        // Guardar token y redirigir
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        showAlert('¡Bienvenido! Redirigiendo...', 'success');
-        
-        setTimeout(() => {
-          window.location.href = './extractor_pro.html';
-        }, 1500);
-
-      } catch (err) {
-        console.error('Login error:', err);
-        showAlert('Error de conexión. ¿El servidor está corriendo en http://localhost:3000?', 'error');
-      } finally {
-        setButtonLoading(btn, false);
-      }
-    }
-
-    // Manejo de Registro
-    async function handleRegister(e) {
-      e.preventDefault();
-
-      const name = document.getElementById('registerName').value.trim();
-      const email = document.getElementById('registerEmail').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      const confirm = document.getElementById('registerConfirm').value;
-
-      // Validaciones
-      if (!name || !email || !password || !confirm) {
-        showAlert('Por favor completa todos los campos', 'error');
-        return;
-      }
-
-      if (!isValidEmail(email)) {
-        showAlert('Correo electrónico inválido', 'error');
-        return;
-      }
-
-      if (password.length < 8) {
-        showAlert('La contraseña debe tener al menos 8 caracteres', 'error');
-        return;
-      }
-
-      if (password !== confirm) {
-        showAlert('Las contraseñas no coinciden', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('registerBtn');
-      setButtonLoading(btn, true);
-
-      try {
-        const response = await fetch(`${API_URL}/auth/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ full_name: name, email, password })
-        });
-
-        const data = await response.json();
-
-        if (!data.success) {
-          showAlert(data.error || 'Error en el registro', 'error');
-          return;
-        }
-
-        // Guardar token y redirigir
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        showAlert('¡Cuenta creada exitosamente! Redirigiendo...', 'success');
-        
-        setTimeout(() => {
-          window.location.href = './extractor_pro.html';
-        }, 1500);
-
-      } catch (err) {
-        console.error('Register error:', err);
-        showAlert('Error de conexión. ¿El servidor está corriendo en http://localhost:3000?', 'error');
-      } finally {
-        setButtonLoading(btn, false);
-      }
-    }
-
-    // Funciones auxiliares
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    function showAlert(message, type) {
-      alertDiv.textContent = message;
-      alertDiv.className = `alert ${type} show`;
-      alertDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function clearAlert() {
-      alertDiv.classList.remove('show');
-      alertDiv.textContent = '';
-    }
-
-    function clearForm(form) {
-      form.reset();
-      form.querySelectorAll('.error-message').forEach(m => m.classList.remove('show'));
-    }
-
-    function setButtonLoading(btn, isLoading) {
-      if (isLoading) {
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span>Procesando...';
-      } else {
-        btn.disabled = false;
-        btn.innerHTML = btn.dataset.originalText || (btn.id === 'loginBtn' ? 'Acceder a mi cuenta' : 'Crear mi cuenta');
-      }
-    }
-
-    // Guardar texto original de botones
-    document.getElementById('loginBtn').dataset.originalText = 'Acceder a mi cuenta';
-    document.getElementById('registerBtn').dataset.originalText = 'Crear mi cuenta';
-  </script>
+<div class="container">
+<div class="logo-container"><div class="logo">Factura<span>AI</span></div><div class="logo-subtitle">Gestion Inteligente de Facturas</div></div>
+<div class="tabs"><button class="tab-btn active" data-tab="login">Acceso</button><button class="tab-btn" data-tab="register">Registro</button></div>
+<div class="alert" id="alert"></div>
+<form id="loginForm" class="form-container">
+<div class="form-group"><label>Correo Electronico</label><input type="email" id="loginEmail" placeholder="tu@email.com" required/></div>
+<div class="form-group"><label>Contrasena</label><input type="password" id="loginPassword" placeholder="minimum 8 chars" required/></div>
+<button type="submit" class="button button-primary" id="loginBtn">Acceder a mi cuenta</button>
+<div class="form-footer">Sin cuenta? <a onclick="switchTab('register')">Registrate aqui</a></div>
+</form>
+<form id="registerForm" class="form-container" style="display:none;">
+<div class="form-group"><label>Nombre Completo</label><input type="text" id="registerName" placeholder="Tu Nombre" required/></div>
+<div class="form-group"><label>Correo Electronico</label><input type="email" id="registerEmail" placeholder="tu@email.com" required/></div>
+<div class="form-group"><label>Contrasena</label><input type="password" id="registerPassword" placeholder="Minimo 8 caracteres" required/></div>
+<div class="form-group"><label>Confirmar Contrasena</label><input type="password" id="registerConfirm" placeholder="Repite tu contrasena" required/></div>
+<div class="form-group"><label>API Key de Gemini</label><input type="password" id="geminiKey" placeholder="AIza..." required/><p class="api-note">Gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a>. Solo se guarda en tu navegador.</p></div>
+<button type="submit" class="button button-primary" id="registerBtn">Crear mi cuenta</button>
+<div class="form-footer">Ya tienes cuenta? <a onclick="switchTab('login')">Accede aqui</a></div>
+</form>
+</div>
+<script>
+const lF=document.getElementById('loginForm'),rF=document.getElementById('registerForm'),aD=document.getElementById('alert');
+document.querySelectorAll('.tab-btn').forEach(t=>t.addEventListener('click',()=>sw(t.dataset.tab)));
+lF.addEventListener('submit',doLogin);rF.addEventListener('submit',doRegister);
+function sw(t){const isL=t==='login';document.querySelectorAll('.form-container').forEach(f=>f.style.display='none');(isL?lF:rF).style.display='block';document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelector('[data-tab="'+t+'"]').classList.add('active');aD.classList.remove('show');}
+function gU(){try{return JSON.parse(localStorage.getItem('factura_users')||'{}')}catch(e){return{}}}
+function sU(u){localStorage.setItem('factura_users',JSON.stringify(u))}
+async function hP(p){const b=new TextEncoder().encode(p);const h=await crypto.subtle.digest('SHA-256',b);return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function doLogin(e){e.preventDefault();const em=document.getElementById('loginEmail').value.trim().toLowerCase();const pw=document.getElementById('loginPassword').value;if(!em||!pw){alert2('Completa todos los campos','error');return;}const btn=document.getElementById('loginBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Verificando...';try{const us=gU();if(!us[em]){alert2('Correo no registrado. Crea una cuenta.','error');return;}const h=await hP(pw);if(us[em].ph!==h){alert2('Contrasena incorrecta','error');return;}localStorage.setItem('token',btoa(em+':'+Date.now()));localStorage.setItem('user',JSON.stringify({email:em,name:us[em].n}));localStorage.setItem('gemini_key',us[em].gk);alert2('Bienvenido! Redirigiendo...','success');setTimeout(()=>window.location.href='./extractor_pro.html',1200);}catch(err){alert2('Error: '+err.message,'error');}finally{btn.disabled=false;btn.textContent='Acceder a mi cuenta';}}
+async function doRegister(e){e.preventDefault();const nm=document.getElementById('registerName').value.trim();const em=document.getElementById('registerEmail').value.trim().toLowerCase();const pw=document.getElementById('registerPassword').value;const cf=document.getElementById('registerConfirm').value;const gk=document.getElementById('geminiKey').value.trim();if(!nm||!em||!pw||!cf||!gk){alert2('Completa todos los campos','error');return;}if(!/^[^s@]+@[^s@]+.[^s@]+$/.test(em)){alert2('Correo invalido','error');return;}if(pw.length<8){alert2('Contrasena minimo 8 caracteres','error');return;}if(pw!==cf){alert2('Contrasenas no coinciden','error');return;}if(!gk.startsWith('AIza')){alert2('API key debe empezar con AIza','error');return;}const btn=document.getElementById('registerBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Creando...';try{const us=gU();if(us[em]){alert2('Correo ya registrado','error');return;}const h=await hP(pw);us[em]={n:nm,ph:h,gk:gk};sU(us);localStorage.setItem('token',btoa(em+':'+Date.now()));localStorage.setItem('user',JSON.stringify({email:em,name:nm}));localStorage.setItem('gemini_key',gk);alert2('Cuenta creada! Redirigiendo...','success');setTimeout(()=>window.location.href='./extractor_pro.html',1200);}catch(err){alert2('Error: '+err.message,'error');}finally{btn.disabled=false;btn.textContent='Crear mi cuenta';}}
+function alert2(m,t){aD.textContent=m;aD.className='alert '+t+' show';}
+</script>
 </body>
 </html>
