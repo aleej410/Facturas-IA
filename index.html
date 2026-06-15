@@ -29,174 +29,169 @@
 <!-- Structured Data -->
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "FacturaAI",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "description": "Plataforma de captura inteligente de facturas y tickets con inteligencia artificial para el mercado mexicano. Extrae datos, clasifica gastos y detecta deducibles SAT automaticamente.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "MXN"
-  },
-  "featureList": ["Extraccion automatica de datos", "Clasificacion de gastos", "Deteccion de deducibles SAT", "Exportacion a Excel", "Historial de facturas"]
+"@context": "https://schema.org",
+"@type": "SoftwareApplication",
+"name": "FacturaAI",
+"applicationCategory": "BusinessApplication",
+"operatingSystem": "Web",
+"description": "Plataforma de captura inteligente de facturas y tickets con inteligencia artificial para el mercado mexicano. Extrae datos, clasifica gastos y detecta deducibles SAT automaticamente.",
+"offers": {
+"@type": "Offer",
+"price": "0",
+"priceCurrency": "MXN"
+},
+"featureList": ["Extraccion automatica de datos", "Clasificacion de gastos", "Deteccion de deducibles SAT", "Exportacion a Excel", "Historial de facturas"]
 }
 </script>
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
 <style>
 :root{
---ink:#0D0D0D;
---paper:#F4F1E8;
---cream:#EDE9DC;
---accent:#C84B31;
---gold:#D4A843;
---sage:#4A7C59;
---muted:#8C8578;
---border:#D5D0C4;
---white:#FEFDFB;
+--ink:#0A0A0A;
+--paper:#F7F7F7;
+--cream:#EFEFEF;
+--accent:#0A0A0A;
+--silver:#999999;
+--charcoal:#2A2A2A;
+--muted:#767676;
+--border:#E0E0E0;
+--white:#FFFFFF;
 --mono:'DM Mono',monospace;
---sans:'DM Sans',sans-serif;
+--sans:'Inter',sans-serif;
 --display:'Syne',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--sans);background:var(--paper);color:var(--ink);overflow-x:hidden;}
-
-/* NOISE OVERLAY */
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5;}
+body{font-family:var(--sans);background:var(--white);color:var(--ink);overflow-x:hidden;}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1.5px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;background:rgba(254,253,251,0.92);backdrop-filter:blur(12px);}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;background:rgba(255,255,255,0.96);backdrop-filter:blur(12px);}
 .nav-logo{font-family:var(--display);font-weight:800;font-size:1.2rem;letter-spacing:-0.03em;text-decoration:none;color:var(--ink);}
-.nav-logo span{color:var(--accent);}
+.nav-logo span{color:var(--ink);}
 .nav-links{display:flex;align-items:center;gap:2rem;}
-.nav-links a{font-size:0.88rem;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:500;}
+.nav-links a{font-size:0.88rem;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:400;letter-spacing:0.01em;}
 .nav-links a:hover{color:var(--ink);}
-.nav-cta{background:var(--ink);color:var(--paper)!important;padding:8px 20px;border-radius:3px;font-family:var(--display);font-weight:700;font-size:0.82rem!important;letter-spacing:0.02em;transition:background .2s!important;}
-.nav-cta:hover{background:var(--accent)!important;color:var(--white)!important;}
+.nav-cta{background:var(--ink);color:var(--white)!important;padding:8px 20px;border-radius:2px;font-family:var(--display);font-weight:700;font-size:0.82rem!important;letter-spacing:0.05em;transition:background .2s!important;}
+.nav-cta:hover{background:var(--charcoal)!important;color:var(--white)!important;}
 
 /* HERO */
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:80px 2.5rem 4rem;border-bottom:1.5px solid var(--ink);}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:80px 2.5rem 4rem;border-bottom:1px solid var(--border);}
 .hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;}
-.hero-badge{font-family:var(--mono);font-size:0.65rem;letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--paper);display:inline-block;padding:5px 12px;border-radius:2px;margin-bottom:1.5rem;}
+.hero-badge{font-family:var(--mono);font-size:0.65rem;letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--white);display:inline-block;padding:5px 12px;border-radius:2px;margin-bottom:1.5rem;}
 .hero h1{font-family:var(--display);font-size:clamp(2.4rem,5vw,3.8rem);font-weight:800;line-height:1.03;letter-spacing:-0.04em;margin-bottom:1.25rem;}
-.hero h1 em{font-style:normal;color:var(--accent);}
-.hero p{font-size:1.05rem;color:var(--muted);line-height:1.7;max-width:480px;margin-bottom:2rem;}
+.hero h1 em{font-style:normal;border-bottom:2px solid var(--ink);}
+.hero p{font-size:1.05rem;color:var(--muted);line-height:1.72;max-width:480px;margin-bottom:2rem;font-weight:300;}
 .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
-.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:0.9rem;letter-spacing:-0.01em;padding:14px 28px;border-radius:3px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;transition:all .2s;}
-.btn-primary{background:var(--accent);color:var(--white);border-color:var(--accent);}
-.btn-primary:hover{background:#A8371F;transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,75,49,.3);}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:0.9rem;letter-spacing:0.02em;padding:14px 28px;border-radius:2px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-primary{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.btn-primary:hover{background:var(--charcoal);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.12);}
 .btn-outline{background:transparent;color:var(--ink);border-color:var(--ink);}
-.btn-outline:hover{background:var(--ink);color:var(--paper);}
+.btn-outline:hover{background:var(--ink);color:var(--white);}
 .hero-visual{position:relative;}
-.hero-card{background:var(--white);border:1.5px solid var(--ink);border-radius:8px;padding:2rem;box-shadow:8px 8px 0 var(--ink);}
+.hero-card{background:var(--white);border:1.5px solid var(--ink);border-radius:4px;padding:2rem;box-shadow:8px 8px 0 var(--ink);}
 .hero-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
 .hero-card-logo{font-family:var(--display);font-weight:800;font-size:1rem;}
-.hero-card-logo span{color:var(--accent);}
-.hero-card-badge{font-family:var(--mono);font-size:0.6rem;background:var(--sage);color:#fff;padding:3px 8px;border-radius:2px;letter-spacing:.06em;}
+.hero-card-badge{font-family:var(--mono);font-size:0.6rem;background:var(--ink);color:var(--white);padding:3px 8px;border-radius:2px;letter-spacing:.08em;}
 .data-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--cream);}
 .data-row:last-child{border-bottom:none;}
-.data-label{font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:.04em;}
+.data-label{font-family:var(--mono);font-size:0.68rem;color:var(--muted);letter-spacing:.06em;}
 .data-value{font-family:var(--display);font-weight:700;font-size:0.95rem;}
-.data-value.money{color:var(--sage);font-size:1.1rem;}
-.data-value.tag{background:var(--cream);padding:2px 8px;border-radius:2px;font-size:0.75rem;}
-.data-value.ded{color:var(--sage);}
-.hero-scan-bar{margin-top:1.2rem;height:4px;background:var(--cream);border-radius:2px;overflow:hidden;}
-.hero-scan-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:2px;width:78%;animation:scanPulse 2s ease-in-out infinite;}
-@keyframes scanPulse{0%,100%{opacity:1}50%{opacity:.6}}
+.data-value.money{color:var(--ink);font-size:1.1rem;}
+.data-value.tag{background:var(--cream);padding:2px 8px;border-radius:2px;font-size:0.75rem;font-weight:600;}
+.data-value.ded{color:var(--charcoal);}
+.hero-scan-bar{margin-top:1.2rem;height:2px;background:var(--cream);border-radius:2px;overflow:hidden;}
+.hero-scan-fill{height:100%;background:var(--ink);border-radius:2px;width:78%;animation:scanPulse 2s ease-in-out infinite;}
+@keyframes scanPulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* STATS */
-.stats{position:relative;z-index:1;border-bottom:1.5px solid var(--ink);background:var(--ink);color:var(--paper);}
+.stats{position:relative;z-index:1;border-bottom:1px solid var(--ink);background:var(--ink);color:var(--white);}
 .stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;}
-.stat-item{padding:3rem 2.5rem;border-right:1px solid #333;}
+.stat-item{padding:3rem 2.5rem;border-right:1px solid #1e1e1e;}
 .stat-item:last-child{border-right:none;}
-.stat-num{font-family:var(--display);font-size:2.8rem;font-weight:800;color:var(--paper);letter-spacing:-0.04em;line-height:1;}
-.stat-num span{color:var(--accent);}
-.stat-label{font-family:var(--mono);font-size:0.7rem;color:#888;letter-spacing:.08em;text-transform:uppercase;margin-top:.4rem;}
+.stat-num{font-family:var(--display);font-size:2.8rem;font-weight:800;color:var(--white);letter-spacing:-0.04em;line-height:1;}
+.stat-num span{color:var(--silver);}
+.stat-label{font-family:var(--mono);font-size:0.68rem;color:#606060;letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem;}
 
 /* PROBLEM */
-.problem{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1.5px solid var(--border);}
+.problem{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1px solid var(--border);background:var(--white);}
 .problem-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-.section-tag{font-family:var(--mono);font-size:0.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+.section-tag{font-family:var(--mono);font-size:0.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
 .problem h2{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;line-height:1.1;letter-spacing:-0.03em;margin-bottom:1.25rem;}
-.problem p{font-size:0.95rem;color:var(--muted);line-height:1.75;margin-bottom:1rem;}
+.problem p{font-size:0.95rem;color:var(--muted);line-height:1.75;margin-bottom:1rem;font-weight:300;}
 .pain-list{list-style:none;display:flex;flex-direction:column;gap:.75rem;}
-.pain-list li{display:flex;align-items:flex-start;gap:.75rem;font-size:0.9rem;line-height:1.5;}
-.pain-list li::before{content:'—';color:var(--accent);font-family:var(--mono);flex-shrink:0;margin-top:1px;}
+.pain-list li{display:flex;align-items:flex-start;gap:.75rem;font-size:0.9rem;line-height:1.5;font-weight:400;color:var(--ink);}
+.pain-list li::before{content:'—';color:var(--silver);font-family:var(--mono);flex-shrink:0;margin-top:1px;}
 
 /* FEATURES */
-.features{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1.5px solid var(--border);background:var(--white);}
+.features{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1px solid var(--border);background:var(--paper);}
 .features-inner{max-width:1200px;margin:0 auto;}
 .features-header{text-align:center;margin-bottom:4rem;}
 .features-header h2{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:.75rem;}
-.features-header p{color:var(--muted);max-width:520px;margin:0 auto;line-height:1.65;}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--border);border:1.5px solid var(--border);border-radius:6px;overflow:hidden;}
-.feature-card{background:var(--white);padding:2rem 1.75rem;}
-.feature-card:hover{background:var(--cream);}
-.feature-icon{font-size:1.8rem;display:block;margin-bottom:1rem;filter:grayscale(.3);}
+.features-header p{color:var(--muted);max-width:520px;margin:0 auto;line-height:1.65;font-weight:300;}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.feature-card{background:var(--white);padding:2.25rem 1.75rem;transition:background .2s;}
+.feature-card:hover{background:var(--paper);}
+.feature-label{font-family:var(--mono);font-size:0.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--silver);display:block;margin-bottom:1rem;border-left:2px solid var(--ink);padding-left:8px;}
 .feature-card h3{font-family:var(--display);font-size:1.05rem;font-weight:700;margin-bottom:.5rem;letter-spacing:-0.02em;}
-.feature-card p{font-size:0.85rem;color:var(--muted);line-height:1.65;}
+.feature-card p{font-size:0.85rem;color:var(--muted);line-height:1.65;font-weight:300;}
 
 /* HOW IT WORKS */
-.how{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1.5px solid var(--border);}
+.how{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1px solid var(--border);background:var(--white);}
 .how-inner{max-width:1200px;margin:0 auto;}
 .how-header{margin-bottom:4rem;}
 .how-header h2{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:.6rem;}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
 .steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}
 .step{position:relative;z-index:1;padding-right:2rem;}
-.step-num{width:56px;height:56px;border:1.5px solid var(--ink);border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:1rem;margin-bottom:1.25rem;}
-.step-num.active{background:var(--accent);color:var(--white);border-color:var(--accent);}
+.step-num{width:56px;height:56px;border:1.5px solid var(--border);border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:1rem;margin-bottom:1.25rem;color:var(--silver);}
+.step-num.active{background:var(--ink);color:var(--white);border-color:var(--ink);}
 .step h3{font-family:var(--display);font-size:1rem;font-weight:700;margin-bottom:.4rem;}
-.step p{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+.step p{font-size:0.82rem;color:var(--muted);line-height:1.6;font-weight:300;}
 
 /* TESTIMONIAL */
-.testimonial{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1.5px solid var(--border);background:var(--ink);color:var(--paper);}
+.testimonial{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1px solid var(--border);background:var(--ink);color:var(--white);}
 .testimonial-inner{max-width:900px;margin:0 auto;text-align:center;}
-.quote{font-family:var(--display);font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;line-height:1.3;letter-spacing:-0.02em;margin-bottom:2rem;}
-.quote em{font-style:normal;color:var(--gold);}
-.quote-meta{font-family:var(--mono);font-size:0.72rem;color:#888;letter-spacing:.08em;text-transform:uppercase;}
+.quote{font-family:var(--display);font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;line-height:1.35;letter-spacing:-0.02em;margin-bottom:2rem;}
+.quote em{font-style:normal;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--silver);}
+.quote-meta{font-family:var(--mono);font-size:0.72rem;color:#505050;letter-spacing:.1em;text-transform:uppercase;}
 
 /* CTA */
-.cta-section{position:relative;z-index:1;padding:7rem 2.5rem;border-bottom:1.5px solid var(--border);}
+.cta-section{position:relative;z-index:1;padding:7rem 2.5rem;border-bottom:1px solid var(--border);background:var(--white);}
 .cta-inner{max-width:700px;margin:0 auto;text-align:center;}
 .cta-inner h2{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:1.25rem;}
-.cta-inner h2 em{font-style:normal;color:var(--accent);}
-.cta-inner p{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:2.5rem;}
+.cta-inner h2 em{font-style:normal;border-bottom:2px solid var(--ink);}
+.cta-inner p{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:2.5rem;font-weight:300;}
 .cta-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.cta-note{font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-top:1rem;letter-spacing:.04em;}
+.cta-note{font-family:var(--mono);font-size:0.68rem;color:var(--muted);margin-top:1rem;letter-spacing:.04em;}
 
 /* FAQ */
-.faq{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1.5px solid var(--border);background:var(--white);}
+.faq{position:relative;z-index:1;padding:6rem 2.5rem;border-bottom:1px solid var(--border);background:var(--paper);}
 .faq-inner{max-width:780px;margin:0 auto;}
 .faq-header{margin-bottom:3rem;}
 .faq-header h2{font-family:var(--display);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:800;letter-spacing:-0.03em;}
 .faq-item{border-bottom:1px solid var(--border);padding:1.5rem 0;}
-.faq-q{font-family:var(--display);font-size:1rem;font-weight:700;margin-bottom:.5rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-.faq-a{font-size:0.88rem;color:var(--muted);line-height:1.75;}
+.faq-q{font-family:var(--display);font-size:1rem;font-weight:700;margin-bottom:.5rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.01em;}
+.faq-a{font-size:0.88rem;color:var(--muted);line-height:1.75;font-weight:300;}
 
 /* FOOTER */
-footer{position:relative;z-index:1;border-top:1.5px solid var(--ink);padding:3rem 2.5rem;background:var(--ink);color:var(--paper);}
+footer{position:relative;z-index:1;border-top:1px solid var(--ink);padding:3rem 2.5rem;background:var(--ink);color:var(--white);}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap;}
-.footer-brand .logo{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-0.03em;color:var(--paper);}
-.footer-brand .logo span{color:var(--accent);}
-.footer-brand p{font-family:var(--mono);font-size:0.7rem;color:#888;margin-top:.4rem;letter-spacing:.04em;}
+.footer-brand .logo{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-0.03em;color:var(--white);}
+.footer-brand p{font-family:var(--mono);font-size:0.68rem;color:#505050;margin-top:.4rem;letter-spacing:.06em;}
 .footer-links{display:flex;gap:3rem;}
-.footer-col h4{font-family:var(--mono);font-size:0.65rem;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:.75rem;}
-.footer-col a{display:block;font-size:0.85rem;color:#bbb;text-decoration:none;margin-bottom:.4rem;transition:color .2s;}
-.footer-col a:hover{color:var(--paper);}
-.footer-bottom{max-width:1200px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid #333;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
-.footer-bottom p{font-family:var(--mono);font-size:0.7rem;color:#888;letter-spacing:.04em;}
+.footer-col h4{font-family:var(--mono);font-size:0.62rem;letter-spacing:.12em;text-transform:uppercase;color:#505050;margin-bottom:.75rem;}
+.footer-col a{display:block;font-size:0.85rem;color:#666;text-decoration:none;margin-bottom:.4rem;transition:color .2s;font-weight:300;}
+.footer-col a:hover{color:var(--white);}
+.footer-bottom{max-width:1200px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid #161616;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-bottom p{font-family:var(--mono);font-size:0.68rem;color:#505050;letter-spacing:.04em;}
 
 /* RESPONSIVE */
 @media(max-width:900px){
 .hero-inner,.problem-inner{grid-template-columns:1fr;gap:3rem;}
 .hero-visual{order:-1;}
 .stats-inner{grid-template-columns:1fr 1fr;}
-.stat-item{border-right:none;border-bottom:1px solid #333;}
+.stat-item{border-right:none;border-bottom:1px solid #1e1e1e;}
 .features-grid{grid-template-columns:1fr 1fr;}
 .steps{grid-template-columns:1fr 1fr;gap:2rem;}
 .steps::before{display:none;}
@@ -221,7 +216,7 @@ nav{padding:0 1.5rem;}
 <a href="#como-funciona">Como funciona</a>
 <a href="#caracteristicas">Caracteristicas</a>
 <a href="#faq">FAQ</a>
-<a href="login.html" class="nav-cta">Acceder →</a>
+<a href="login.html" class="nav-cta">Acceder</a>
 </div>
 </nav>
 
@@ -233,15 +228,15 @@ nav{padding:0 1.5rem;}
 <h1>Captura <em>inteligente</em> de facturas y tickets</h1>
 <p>Sube una foto de tu factura o ticket de compra. La IA extrae todos los datos, clasifica la categoria, detecta si es deducible SAT y exporta a Excel en segundos. Sin servidores, sin suscripciones.</p>
 <div class="hero-actions">
-<a href="login.html" class="btn btn-primary">Empezar gratis →</a>
+<a href="login.html" class="btn btn-primary">Empezar gratis</a>
 <a href="#como-funciona" class="btn btn-outline">Ver como funciona</a>
 </div>
 </div>
 <div class="hero-visual">
 <div class="hero-card">
 <div class="hero-card-header">
-<span class="nav-logo" style="font-size:.9rem">Factura<span style="color:var(--accent)">AI</span></span>
-<span class="hero-card-badge">✓ EXTRAIDO</span>
+<span class="nav-logo" style="font-size:.9rem">FacturaAI</span>
+<span class="hero-card-badge">EXTRAIDO</span>
 </div>
 <div class="data-row"><span class="data-label">NEGOCIO</span><span class="data-value">Oxxo Insurgentes</span></div>
 <div class="data-row"><span class="data-label">FECHA</span><span class="data-value">2025-06-12</span></div>
@@ -249,7 +244,7 @@ nav{padding:0 1.5rem;}
 <div class="data-row"><span class="data-label">SUBTOTAL</span><span class="data-value">$48.28</span></div>
 <div class="data-row"><span class="data-label">IVA (16%)</span><span class="data-value">$7.72</span></div>
 <div class="data-row"><span class="data-label">TOTAL</span><span class="data-value money">$56.00</span></div>
-<div class="data-row"><span class="data-label">DEDUCIBLE SAT</span><span class="data-value ded">⚠ Parcial (50%)</span></div>
+<div class="data-row"><span class="data-label">DEDUCIBLE SAT</span><span class="data-value ded">Parcial (50%)</span></div>
 <div class="hero-scan-bar"><div class="hero-scan-fill"></div></div>
 </div>
 </div>
@@ -283,7 +278,7 @@ nav{padding:0 1.5rem;}
 <div class="problem-inner">
 <div>
 <p class="section-tag">El problema de hoy</p>
-<h2>¿Cuantas horas pierdes capturando <em style="color:var(--accent);font-style:normal">facturas a mano</em>?</h2>
+<h2>¿Cuantas horas pierdes capturando facturas a mano?</h2>
 <p>Cada dia, contadores y duenos de negocio en Mexico pierden horas revisando, organizando y cargando facturas manualmente. Errores de captura, gastos no deducibles por descuido, Excel desactualizados.</p>
 <p>Mientras tanto, tu competencia ya automatizo eso.</p>
 </div>
@@ -310,32 +305,32 @@ nav{padding:0 1.5rem;}
 </div>
 <div class="features-grid">
 <div class="feature-card">
-<span class="feature-icon">📸</span>
+<span class="feature-label">Captura</span>
 <h3>Extraccion con foto</h3>
 <p>Sube una imagen de cualquier ticket o factura. La IA lee y extrae automaticamente todos los campos relevantes.</p>
 </div>
 <div class="feature-card">
-<span class="feature-icon">🏷️</span>
+<span class="feature-label">Clasificacion</span>
 <h3>Clasificacion automatica</h3>
 <p>Cada factura se clasifica en su categoria correcta: Alimentacion, Transporte, Servicios, Tecnologia y mas.</p>
 </div>
 <div class="feature-card">
-<span class="feature-icon">🧾</span>
+<span class="feature-label">Fiscal</span>
 <h3>Deducibles SAT</h3>
 <p>Detecta automaticamente si el gasto es deducible, parcialmente deducible o no aplica segun criterios del SAT Mexico.</p>
 </div>
 <div class="feature-card">
-<span class="feature-icon">📊</span>
+<span class="feature-label">Exportar</span>
 <h3>Exportacion a Excel</h3>
 <p>Con un clic exporta todas tus facturas a un archivo Excel profesional con hoja de resumen por categoria.</p>
 </div>
 <div class="feature-card">
-<span class="feature-icon">🔒</span>
+<span class="feature-label">Privacidad</span>
 <h3>100% privado</h3>
 <p>Tus datos nunca salen de tu navegador. Ningun servidor almacena tus facturas ni informacion financiera.</p>
 </div>
 <div class="feature-card">
-<span class="feature-icon">⚡</span>
+<span class="feature-label">Navegador</span>
 <h3>Sin instalacion</h3>
 <p>Funciona directamente en el navegador. No hay nada que descargar, instalar ni configurar en tu computadora.</p>
 </div>
@@ -390,7 +385,7 @@ nav{padding:0 1.5rem;}
 <h2>Automatiza tus facturas con <em>inteligencia artificial</em></h2>
 <p>Unete a los emprendedores y contadores que ya dejaron de capturar facturas a mano. Gratis, rapido, sin servidores.</p>
 <div class="cta-actions">
-<a href="login.html" class="btn btn-primary" style="font-size:1rem;padding:16px 36px">Crear cuenta gratis →</a>
+<a href="login.html#registro" class="btn btn-primary">Crear cuenta gratis</a>
 </div>
 <p class="cta-note">Sin tarjeta de credito · Solo necesitas una API key gratuita de Google Gemini</p>
 </div>
@@ -430,7 +425,7 @@ nav{padding:0 1.5rem;}
 <footer>
 <div class="footer-inner">
 <div class="footer-brand">
-<div class="logo">Factura<span>AI</span></div>
+<div class="logo">FacturaAI</div>
 <p>Captura inteligente de facturas · Mexico</p>
 </div>
 <div class="footer-links">
@@ -458,13 +453,11 @@ nav{padding:0 1.5rem;}
 document.querySelectorAll('.faq-q').forEach(q => {
   q.addEventListener('click', () => {
     const item = q.parentElement;
-    const ans = item.querySelector('.faq-a');
-    const isOpen = ans.style.display === 'block';
+    const answer = item.querySelector('.faq-a');
+    const isOpen = answer.style.display === 'block';
     document.querySelectorAll('.faq-a').forEach(a => a.style.display = 'none');
-    document.querySelectorAll('.faq-q span:last-child').forEach(s => s.textContent = '+');
     if(!isOpen){
-      ans.style.display = 'block';
-      q.querySelector('span:last-child').textContent = '−';
+      answer.style.display = 'block';
     }
   });
 });
@@ -473,8 +466,8 @@ document.querySelectorAll('.faq-a').forEach(a => a.style.display = 'none');
 
 // Smooth nav shadow on scroll
 window.addEventListener('scroll', () => {
-  document.querySelector('nav').style.boxShadow = window.scrollY > 10 ? '0 2px 20px rgba(13,13,13,0.08)' : 'none';
+  document.querySelector('nav').style.boxShadow = window.scrollY > 10 ? '0 1px 0 #E0E0E0' : 'none';
 });
 </script>
 </body>
-  </html>
+</html>
